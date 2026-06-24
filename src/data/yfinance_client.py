@@ -19,7 +19,7 @@ def fetch_prices(ticker: str, period: str = "5y") -> pd.DataFrame | None:
     return df
 
 
-def fetch_all(period: str = "5y") -> dict[str, pd.DataFrame]:
+def fetch_all(period: str = "max") -> dict[str, pd.DataFrame]:
     result = {}
     for ticker in TICKERS_US:
         df = fetch_prices(ticker, period)

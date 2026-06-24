@@ -5,9 +5,10 @@ from src.data.yfinance_client import fetch_all as fetch_prices
 from src.data.fred_client import fetch_all as fetch_fred
 from src.signals.orchestrator import compute_all_signals, vote, regime_from_vote
 from src.portfolio import compute_allocation
+from src.notifications import send_signal_report
 
 
-def run_pipeline(save_to_db: bool = True):
+def run_pipeline(save_to_db: bool = True, send_telegram: bool = True):
     now = datetime.now()
     print(f"[{now:%Y-%m-%d %H:%M}] Iniciando pipeline...")
 
@@ -36,6 +37,11 @@ def run_pipeline(save_to_db: bool = True):
     print(f"\n--- CARTERA SUGERIDA ---")
     for ticker, pct in sorted(allocation.items(), key=lambda x: -x[1]):
         print(f"  {ticker:6s}: {pct:5.1%}")
+
+    if send_telegram:
+        ok = send_signal_report(vote_result.value, confidence, regime.value, signals, allocation)
+        print(f"\n  Telegram: {'✅ enviado' if ok else '❌ falló'}")
+
     print(f"[{datetime.now():%Y-%m-%d %H:%M}] Pipeline completado.")
 
 

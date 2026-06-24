@@ -6,7 +6,7 @@ from datetime import datetime
 from src.models.enums import Regime
 from src.signals.orchestrator import compute_all_signals, vote, regime_from_vote
 from src.portfolio import compute_allocation
-from src.risk import compute_positions, estimate_monthly_fees, PositionPlan
+from src.risk import compute_positions, estimate_monthly_fees, PositionPlan, STOP_LOSS_PCT, TAKE_PROFIT_PCT
 from src.signals.base import SignalResult
 
 
@@ -115,6 +115,3 @@ def _build_summary(vote: str, confidence: float, regime: Regime, signals: list[S
     lines.append(f"Si un activo pierde momentum relativo 3 dias seguidos → revisar")
     return "\n".join(lines)
 
-
-STOP_LOSS_PCT = 0.10
-TAKE_PROFIT_PCT = 0.15

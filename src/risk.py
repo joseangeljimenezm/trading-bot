@@ -1,14 +1,14 @@
 """Gestión de riesgo: stop-loss, take-profit, sizing, comisiones."""
 
 from dataclasses import dataclass
-from datetime import datetime
 
 import yfinance as yf
 
-# --- Configuración de riesgo ---
-STOP_LOSS_PCT = 0.10       # -10% por activo
-TAKE_PROFIT_PCT = 0.15     # +15% target inicial
-PORTFOLIO_VIRTUAL = 100_000  # $100k paper trading
+from src.settings import RISK_CONFIG, PORTFOLIO_CONFIG
+
+STOP_LOSS_PCT = RISK_CONFIG["stop_loss_pct"]
+TAKE_PROFIT_PCT = RISK_CONFIG["take_profit_pct"]
+PORTFOLIO_VIRTUAL = PORTFOLIO_CONFIG["virtual_capital"]
 
 # Comisiones estimadas IBKR Tiered
 FEES = {

@@ -33,6 +33,12 @@ TICKERS_UCITS = {
     "ERNS": "Commodities UCITS",
 }
 
+# --- IBKR ---
+IBKR_HOST = os.getenv("IBKR_HOST", "127.0.0.1")
+IBKR_PORT = int(os.getenv("IBKR_PORT", "7497"))
+IBKR_CLIENT_ID = int(os.getenv("IBKR_CLIENT_ID", "1"))
+IBKR_PAPER = os.getenv("IBKR_PAPER", "true").lower() == "true"
+
 TICKERS_FRED = {
     "DGS10": "T-bond 10y",
     "DGS2": "T-bond 2y",

@@ -9,15 +9,9 @@ from src.signals.usd_trend import compute_usd_trend
 from src.signals.crypto_composite import compute_crypto_composite
 from src.signals.liquidity import compute_liquidity
 
-SIGNAL_WEIGHTS = {
-    "dual_momentum": 0.25,
-    "vix_regime": 0.20,
-    "canary": 0.15,
-    "fed_regime": 0.15,
-    "crypto_composite": 0.10,
-    "usd_trend": 0.10,
-    "liquidity": 0.05,
-}
+from src.settings import SIGNAL_CONFIG
+
+SIGNAL_WEIGHTS = {name: cfg["weight"] for name, cfg in SIGNAL_CONFIG.items()}
 
 
 def compute_all_signals() -> list[SignalResult]:

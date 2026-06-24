@@ -36,3 +36,21 @@ def upsert_fred(df: pd.DataFrame):
     for r in records:
         r["date"] = str(r["date"])[:10]
     client.table("fred_data").upsert(records).execute()
+
+
+def save_signal_log(signal_name: str, vote: str, weight: float, details: str | None):
+    client = get_client()
+    today = str(date.today())
+    client.table("signal_log").upsert({
+        "date": today,
+        "signal_name": signal_name,
+        "vote": vote,
+        "weight": weight,
+        "details": details,
+    }).execute()
+
+
+def get_signal_history(days: int = 30) -> list[dict]:
+    client = get_client()
+    resp = client.table("signal_log").select("*").gte("date", str(date.today() - __import__("datetime").timedelta(days=days))).order("date", desc=True).execute()
+    return resp.data

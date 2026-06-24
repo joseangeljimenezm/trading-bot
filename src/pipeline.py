@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from src.data.supabase_client import upsert_prices, upsert_fred
+from src.data.supabase_client import upsert_prices, upsert_fred, save_signal_log
 from src.data.yfinance_client import fetch_all as fetch_prices
 from src.data.fred_client import fetch_all as fetch_fred
 from src.signals.orchestrator import compute_all_signals, vote, regime_from_vote
@@ -33,6 +33,8 @@ def run_pipeline(save_to_db: bool = True, send_telegram: bool = True):
     print(f"Voto: {vote_result.value.upper()} | Confianza: {confidence:.0%} | Régimen: {regime.value}")
     for s in signals:
         print(f"  {s.signal_name:20s} -> {s.vote.value:8s} | {s.details}")
+        if save_to_db:
+            save_signal_log(s.signal_name, s.vote.value, s.weight, s.details)
 
     print(f"\n--- CARTERA SUGERIDA ---")
     for ticker, pct in sorted(allocation.items(), key=lambda x: -x[1]):
